@@ -1,0 +1,13 @@
+{
+  "User": {
+    "Id": 1740123,
+    "Username": "imotep460",
+    "Name": "Hasse Augustinussen",
+    "Email": "hasse_augu@hotmail.dk",
+    "AvatarUrl": "https://secure.gravatar.com/avatar/2b8ce8eda42dd0176cbf51cf093e2d5f?s=80&d=identicon",
+    "PrivateToken": "7svx6JYhEcD6MJXQRtLy",
+    "Host": "https://gitlab.com",
+    "TwoFactorEnabled": false,
+    "ApiVersion": 1
+  }
+}
