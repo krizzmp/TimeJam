@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 2f;
     public float jumpSpeed = 4f;
 
-    private Rigidbody2D rb2d;       
+    private Rigidbody2D rb2d;
 
 
     void Start()
@@ -34,8 +34,13 @@ public class PlayerMovement : MonoBehaviour
      
         Vector2 movement = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
 
+        Animator anim = GetComponent<Animator>();
+        anim.SetFloat("moveSpeed", Mathf.Abs(moveHorizontal));
+
 
         rb2d.velocity = movement;
+
+        FlipSPrite(moveHorizontal);
     }
 
     private void Jump()
@@ -47,6 +52,20 @@ public class PlayerMovement : MonoBehaviour
 
         GetComponent<AudioSource>().Play();
 
+    }
+
+    private void FlipSPrite(float dir)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        if (dir >= 0.01)
+        {
+            sr.flipX = false;
+        }
+        else if (dir <= -0.01)
+        {
+            sr.flipX = true;
+        }
     }
 
 
