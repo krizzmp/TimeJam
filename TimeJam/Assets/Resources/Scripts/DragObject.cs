@@ -77,7 +77,7 @@ public class DragObject : MonoBehaviour
 			float imageCenterX = imageWidth / 2;
 			float imageCenterY = 100 + (imageHeight / 2);
 
-			GUI.DrawTexture(new Rect((Screen.width / 2) - imageCenterX, (Screen.height / 2) - imageCenterY, imageWidth, imageHeight), tex_clickToDrag, ScaleMode.ScaleToFit, true, 10.0F);
+			GUI.DrawTexture(new Rect((Screen.width / 2) - imageCenterX, (Screen.height / 2) - imageCenterY, imageWidth, imageHeight), tex_clickToDrag, ScaleMode.StretchToFill, true, 10.0F);
 		}
 	}
 }
