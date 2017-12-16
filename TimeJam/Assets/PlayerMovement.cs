@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpMovement = new Vector2(rb2d.velocity.x, jumpSpeed);
 
         rb2d.velocity = jumpMovement;
+
+        GetComponent<AudioSource>().Play();
+
     }
 
 
