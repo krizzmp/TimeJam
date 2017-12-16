@@ -45,7 +45,7 @@ public class InteractWithObjects : MonoBehaviour {
 		if(collider.tag == "Item")
 		{
 			showPickUpLine = false;
-			colliderItem = null;
+			colliderItem = null;  
 		}
 	}
 
