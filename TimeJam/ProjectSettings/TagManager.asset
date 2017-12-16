@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Draggable
   - Item
-  - Ladder
   layers:
   - Default
   - TransparentFX
