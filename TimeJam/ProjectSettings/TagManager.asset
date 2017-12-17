@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Draggable
   - Item
+  - Portal
+  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -15,12 +17,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Past
+  - Present
+  - InPortalPast
+  - InPortalPresent
+  - PlayerPast
+  - PlayerPresent
   - 
   - 
   - 
@@ -42,4 +44,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Back
+    uniqueID: 346711565
+    locked: 0
+  - name: Main
+    uniqueID: 4149309691
+    locked: 0
+  - name: Front
+    uniqueID: 1680996091
     locked: 0
