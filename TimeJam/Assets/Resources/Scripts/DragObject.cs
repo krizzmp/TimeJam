@@ -5,24 +5,27 @@ using UnityEngine;
 public class DragObject : MonoBehaviour
 {
 	private FixedJoint2D fixedJoint;
-	private bool isOnDraggableObject;
-	private bool canDrag;
+	private bool isOnPlayer;
+	private bool showText;
 
-	private Collider2D draggableCollider;
+	private Collider2D playerCollider;
+	private Rigidbody2D body;
 
 	// Use this for initialization
 	void Start ()
 	{
+		body = GetComponent<Rigidbody2D>();
 		fixedJoint = GetComponent<FixedJoint2D>();
 		fixedJoint.enabled = false;
-		isOnDraggableObject = false;
-		canDrag = true;
+		isOnPlayer = false;
+		showText = true;
+		body.mass = 10;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if(draggableCollider != null)
+		if(playerCollider != null)
 		{
 			if(Input.GetKeyDown(KeyCode.E))
 			{
@@ -33,26 +36,30 @@ public class DragObject : MonoBehaviour
 
 	private void ToggleJoint()
 	{
-		if(canDrag)
+		if(showText)
 		{
-			canDrag = false;
+			showText = false;
 			fixedJoint.enabled = true;
-			fixedJoint.connectedBody = draggableCollider.GetComponent<Rigidbody2D>();
+			fixedJoint.connectedBody = playerCollider.GetComponent<Rigidbody2D>();
+
+			body.mass = 2;
 		}
 		else
 		{
-			canDrag = true;
+			showText = true;
 			fixedJoint.enabled = false;
 			fixedJoint.connectedBody = null;
+
+			body.mass = 10;
 		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		if(collider.tag == "Draggable")
+		if(collider.tag == "Player")
 		{
-			isOnDraggableObject = true;
-			draggableCollider = collider;
+			isOnPlayer = true;
+			playerCollider = collider;
 		}
 	}
 
@@ -60,14 +67,14 @@ public class DragObject : MonoBehaviour
 	{
 		if(collider.tag == "Draggable")
 		{
-			isOnDraggableObject = false;
-			draggableCollider = null;
+			isOnPlayer = false;
+			playerCollider = null;
 		}
 	}
 
 	private void OnGUI()
 	{
-		if(canDrag && isOnDraggableObject)
+		if(showText && isOnPlayer)
 		{
 			Texture tex_clickToDrag = Resources.Load<Texture>("Textures/Tex_ClickToDrag");
 

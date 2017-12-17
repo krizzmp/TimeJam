@@ -19,10 +19,10 @@ TagManager:
   - 
   - Past
   - Present
-  - InPortal
-  - 
-  - 
-  - 
+  - InPortalPast
+  - InPortalPresent
+  - PlayerPast
+  - PlayerPresent
   - 
   - 
   - 
