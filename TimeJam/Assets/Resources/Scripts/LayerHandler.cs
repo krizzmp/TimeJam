@@ -260,41 +260,42 @@ public class LayerHandler : MonoBehaviour
         Material activeMaterial = NotEqualOneMaterial;
         Material inActiveMaterial = RegularMaterial;
 
-        StoneIsInPast = !StoneIsInPast;
         GameObject Present_Stone = GameObject.Find("Stone");
-        if (StoneIsInPast)
+  
+            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+            //Present_Stone.layer = 9;
+        Present_Stone.layer = 10;
+    }
+
+    #endregion
+
+    public void ChangeLayerForExitGameObject(GameObject stone)
+    {
+        Material activeMaterial = NotEqualOneMaterial;
+        Material inActiveMaterial = RegularMaterial;
+        StoneIsInPast = !StoneIsInPast;
+
+        GameObject Present_Stone = GameObject.Find("Stone");
+        if (StoneIsInPast && currentLayer == Layer.Past || !StoneIsInPast && currentLayer == Layer.Present)
         {
+            Present_Stone.layer = 8;
             Present_Stone.GetComponent<SpriteRenderer>().material = activeMaterial;
             Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
+        else
+        {
+            Present_Stone.layer = 9;
+            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
+        }
+        if (StoneIsInPast)
+        {
             Present_Stone.layer = 8;
         }
         else
         {
-            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
-            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
             Present_Stone.layer = 9;
         }
-
-        //if (otherGameObject.transform.parent == layer_present.transform)
-        //{
-        //    otherGameObject.transform.parent = layer_past.transform;
-        //    otherGameObject.layer = layer_past.layer;
-        //}
-        //else
-        //{
-        //    otherGameObject.transform.parent = layer_present.transform;
-        //    otherGameObject.layer = layer_present.layer;
-        //}
-        //SpriteRenderer[] spriteRenderers = otherGameObject.GetComponentsInChildren<SpriteRenderer>();
-        //foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-        //{
-        //    spriteRenderer.material =
-        //        spriteRenderer.material == NotEqualOneMaterial ? RegularMaterial : NotEqualOneMaterial;
-        //    spriteRenderer.sortingOrder = spriteRenderer.sortingOrder == sort_active_tex_main
-        //        ? sort_deactive_tex_main
-        //        : sort_active_tex_main;
-        //}
     }
-
-    #endregion
 }

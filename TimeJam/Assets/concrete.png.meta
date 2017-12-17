@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 8b645632e1cb34f4bba7600397927d55
-timeCreated: 1513472642
+timeCreated: 1513481177
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: concrete_0
+    21300002: concrete_1
+    21300004: concrete_2
+    21300006: concrete_3
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -92,6 +95,48 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: concrete_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: concrete_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: concrete_3
+      rect:
+        serializedVersion: 2
+        x: 96
         y: 0
         width: 32
         height: 32
