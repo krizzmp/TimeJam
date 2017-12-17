@@ -64,7 +64,14 @@ public class LayerHandler : MonoBehaviour
             Instantiate(PortalPrefab, new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
                 Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0), Quaternion.identity);
         }
-
+        if (Input.GetMouseButtonUp(1))
+        {
+            PortalPlaceHolder.SetActive(false);
+            foreach (GameObject portal in GameObject.FindGameObjectsWithTag("Portal"))
+            {
+                Destroy(portal);
+            }
+        }
 
         Vector3 campos = Camera.main.transform.position;
         foreach (GameObject background in Backgrounds)

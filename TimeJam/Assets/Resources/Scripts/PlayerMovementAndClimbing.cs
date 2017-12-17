@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,7 +54,7 @@ public class PlayerMovementAndClimbing : MonoBehaviour
 			moveDirection = Input.GetAxis("Horizontal");
 		}
 
-		if(rb2d.velocity.y == 0)
+		if(Math.Abs(rb2d.velocity.y) < 0.01)
 		{
 			if(Input.GetKeyDown(KeyCode.Space))
 			{
