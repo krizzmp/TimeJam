@@ -18,22 +18,26 @@ public class LayerHandler : MonoBehaviour
     public GameObject[] Backgrounds;
     public GameObject PlayerGameObject;
 
+    public GameObject PortalPrefab;
+    public GameObject PortalPlaceHolder;
+
     private Layer currentLayer;
 
-	private int sort_active_bg = -2;
-	private int sort_active_tex_back = -1;
-	private int sort_active_tex_main = 0;
-	private int sort_active_tex_front = 1;
+    private int sort_active_bg = -2;
+    private int sort_active_tex_back = -1;
+    private int sort_active_tex_main = 0;
+    private int sort_active_tex_front = 1;
 
-	private int sort_deactive_bg = -6;
-	private int sort_deactive_tex_back = -5;
-	private int sort_deactive_tex_main = -4;
-	private int sort_deactive_tex_front = -3;
+    private int sort_deactive_bg = -6;
+    private int sort_deactive_tex_back = -5;
+    private int sort_deactive_tex_main = -4;
+    private int sort_deactive_tex_front = -3;
 
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
-		GoToPresent();
+        GoToPresent();
+        Instantiate(PortalPrefab, PlayerGameObject.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -43,6 +47,30 @@ public class LayerHandler : MonoBehaviour
         {
             ToggleLayer();
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+            PortalPlaceHolder.SetActive(true);
+        }
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("sets transform");
+            Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            PortalPlaceHolder.transform.position = new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0);
+            ;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            PortalPlaceHolder.SetActive(false);
+            foreach (GameObject portal in GameObject.FindGameObjectsWithTag("Portal"))
+            {
+                Destroy(portal);
+            }
+            Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Instantiate(PortalPrefab, new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0), Quaternion.identity);
+        }
+
 
         Vector3 campos = Camera.main.transform.position;
         foreach (GameObject background in Backgrounds)
@@ -78,7 +106,6 @@ public class LayerHandler : MonoBehaviour
         Present_Foreground.GetComponent<TilemapRenderer>().sortingOrder = 1;
 
 
-
         GameObject Background_Past = GameObject.Find("Background_Past");
         Background_Past.GetComponentInChildren<SpriteRenderer>().material = InActiveMaterial;
         Background_Past.GetComponentInChildren<SpriteRenderer>().sortingOrder = -6;
@@ -95,6 +122,7 @@ public class LayerHandler : MonoBehaviour
         Past_Foreground.GetComponent<TilemapRenderer>().material = InActiveMaterial;
         Past_Foreground.GetComponent<TilemapRenderer>().sortingOrder = -3;
     }
+
     void GoToPast()
     {
         currentLayer = Layer.Past;
@@ -119,7 +147,6 @@ public class LayerHandler : MonoBehaviour
         GameObject Present_Foreground = GameObject.Find("Present_Foreground");
         Present_Foreground.GetComponent<TilemapRenderer>().material = inActiveMaterial;
         Present_Foreground.GetComponent<TilemapRenderer>().sortingOrder = -3;
-
 
 
         GameObject Background_Past = GameObject.Find("Background_Past");
@@ -153,102 +180,6 @@ public class LayerHandler : MonoBehaviour
         }
     }
 
-    private void SetLayer(Layer layer)
-    {
-        currentLayer = layer;
-        if (layer == Layer.Past)
-        {
-            SetMaterials(layer_past, layer_present);
-            Backgrounds[0].GetComponentInChildren<SpriteRenderer>().sortingOrder = sort_active_bg;
-            Backgrounds[1].GetComponentInChildren<SpriteRenderer>().sortingOrder = sort_deactive_bg;
-        }
-        else if (layer == Layer.Present)
-        {
-            SetMaterials(layer_present, layer_past);
-            Backgrounds[0].GetComponentInChildren<SpriteRenderer>().sortingOrder = sort_deactive_bg;
-            Backgrounds[1].GetComponentInChildren<SpriteRenderer>().sortingOrder = sort_active_bg;
-        }
-    }
-
-    private void SetMaterials(GameObject layerActivate, GameObject layerDeactivate)
-    {
-        TilemapRenderer[] tilemapRenderers = layerActivate.GetComponentsInChildren<TilemapRenderer>();
-        foreach(TilemapRenderer tilemapRenderer in tilemapRenderers)
-        {
-            tilemapRenderer.material = NotEqualOneMaterial;
-            switch (tilemapRenderer.sortingLayerName)
-            {
-                case "Back":
-                    tilemapRenderer.sortingOrder = sort_active_tex_back;
-                    break;
-                case "Main":
-                    tilemapRenderer.sortingOrder = sort_active_tex_main;
-                    break;
-                case "Front":
-                    tilemapRenderer.sortingOrder = sort_active_tex_front;
-                    break;
-            }
-
-        }
-
-        TilemapRenderer[] _tilemapRenderers = layerDeactivate.GetComponentsInChildren<TilemapRenderer>();
-        foreach(TilemapRenderer tilemapRenderer in tilemapRenderers)
-        {
-            tilemapRenderer.material = RegularMaterial;
-            switch (tilemapRenderer.sortingLayerName)
-            {
-                case "Back":
-                    tilemapRenderer.sortingOrder = sort_deactive_tex_back;
-                    break;
-                case "Main":
-                    tilemapRenderer.sortingOrder = sort_deactive_tex_main;
-                    break;
-                case "Front":
-                    tilemapRenderer.sortingOrder = sort_deactive_tex_front;
-                    break;
-            }
-        }
-
-
-        SpriteRenderer[] spriteRenderers = layerActivate.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-        {
-            spriteRenderer.material = NotEqualOneMaterial;
-
-            switch(spriteRenderer.sortingLayerName)
-            {
-                case "Back":
-                    spriteRenderer.sortingOrder = sort_active_tex_back;
-                    break;
-                case "Main":
-                    spriteRenderer.sortingOrder = sort_active_tex_main;
-                    break;
-                case "Front":
-                    spriteRenderer.sortingOrder = sort_active_tex_front;
-                    break;
-            }
-			
-        }
-        SpriteRenderer[] _spriteRenderers = layerDeactivate.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
-        {
-            spriteRenderer.material = RegularMaterial;
-
-            switch(spriteRenderer.sortingLayerName)
-            {
-                case "Back":
-                    spriteRenderer.sortingOrder = sort_deactive_tex_back;
-                    break;
-                case "Main":
-                    spriteRenderer.sortingOrder = sort_deactive_tex_main;
-                    break;
-                case "Front":
-                    spriteRenderer.sortingOrder = sort_deactive_tex_front;
-                    break;
-            }
-        }
-    }
-
     public void ChangeLayerForGameObject(GameObject otherGameObject)
     {
         if (otherGameObject.transform.parent == layer_present.transform)
@@ -266,7 +197,9 @@ public class LayerHandler : MonoBehaviour
         {
             spriteRenderer.material =
                 spriteRenderer.material == NotEqualOneMaterial ? RegularMaterial : NotEqualOneMaterial;
-            spriteRenderer.sortingOrder = spriteRenderer.sortingOrder == sort_active_tex_main ? sort_deactive_tex_main : sort_active_tex_main;
+            spriteRenderer.sortingOrder = spriteRenderer.sortingOrder == sort_active_tex_main
+                ? sort_deactive_tex_main
+                : sort_active_tex_main;
         }
     }
 

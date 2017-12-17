@@ -11,7 +11,7 @@ public class PortalMeshGenerator : MonoBehaviour
     Vector3 topPos;
     Vector3 botPos;
 
-    public Transform player;
+    private Transform player;
 
     float width = 2;
     float height = 2;
@@ -27,6 +27,7 @@ public class PortalMeshGenerator : MonoBehaviour
         vertices = new Vector3[4];
 
         GetComponent<MeshRenderer>().material = mat;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
@@ -36,24 +37,25 @@ public class PortalMeshGenerator : MonoBehaviour
 
     private void UpdateRayCast()
     {
-        var headingTop = portalTop.position - player.position;
+        Vector3 playerPosition = player.position + new Vector3(0, 0.2f, 0);
+        var headingTop = portalTop.position - playerPosition;
         var distanceTop = headingTop.magnitude;
         var directionTop = headingTop / distanceTop;
 
-        var headingBot = portalBottom.position - player.position;
+        var headingBot = portalBottom.position - playerPosition;
         var distanceBot = headingBot.magnitude;
         var directionBot = headingBot / distanceBot;
 
         Ray2D hitTop = new Ray2D();
-        hitTop.origin = player.position;
+        hitTop.origin = playerPosition;
         hitTop.direction = directionTop;
 
         Ray2D hitBot = new Ray2D();
-        hitBot.origin = player.position;
+        hitBot.origin = playerPosition;
         hitBot.direction = directionBot;
 
-        Debug.DrawRay(player.position, directionTop * 100);
-        Debug.DrawRay(player.position, directionBot * 100);
+        Debug.DrawRay(playerPosition, directionTop * 100);
+        Debug.DrawRay(playerPosition, directionBot * 100);
 
         UpdateVertices(hitTop.GetPoint(100), hitBot.GetPoint(100));
     }
@@ -70,7 +72,7 @@ public class PortalMeshGenerator : MonoBehaviour
 
         mesh.vertices = vertices;
 
-        mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
+        mesh.triangles = new int[] {0, 1, 2, 0, 2, 3};
 
 
         GetComponent<MeshFilter>().mesh = mesh;
