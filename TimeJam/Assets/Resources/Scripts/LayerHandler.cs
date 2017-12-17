@@ -32,12 +32,13 @@ public class LayerHandler : MonoBehaviour
     private int sort_deactive_tex_back = -5;
     private int sort_deactive_tex_main = -4;
     private int sort_deactive_tex_front = -3;
+    private bool StoneIsInPast;
 
     // Use this for initialization
     void Start()
     {
         GoToPresent();
-        Instantiate(PortalPrefab, PlayerGameObject.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
+        //Instantiate(PortalPrefab, PlayerGameObject.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -106,7 +107,7 @@ public class LayerHandler : MonoBehaviour
         Present_Foreground.GetComponent<TilemapRenderer>().sortingOrder = 1;
 
 
-        GameObject Background_Past = GameObject.Find("Background_Past");
+		GameObject Background_Past = GameObject.Find("Background_Past");
         Background_Past.GetComponentInChildren<SpriteRenderer>().material = InActiveMaterial;
         Background_Past.GetComponentInChildren<SpriteRenderer>().sortingOrder = -6;
 
@@ -121,8 +122,45 @@ public class LayerHandler : MonoBehaviour
         GameObject Past_Foreground = GameObject.Find("Past_Foreground");
         Past_Foreground.GetComponent<TilemapRenderer>().material = InActiveMaterial;
         Past_Foreground.GetComponent<TilemapRenderer>().sortingOrder = -3;
-    }
 
+		//Other objects
+		GameObject Present_Stone = GameObject.Find("Stone");
+        if (StoneIsInPast == false)
+        {
+            Present_Stone.GetComponent<SpriteRenderer>().material = ActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
+        else
+        {
+            Present_Stone.GetComponent<SpriteRenderer>().material = InActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
+        }
+		
+
+		GameObject Past_Sword = GameObject.Find("Item_Sword");
+		if(Past_Sword != null)
+		{
+			Past_Sword.GetComponent<SpriteRenderer>().material = InActiveMaterial;
+			Past_Sword.GetComponent<SpriteRenderer>().sortingOrder = -4;
+		}
+
+		// Ladders
+		GameObject Present_Ladder = GameObject.Find("Present_Ladder");
+		SpriteRenderer[] Present_Ladder_renderers = Present_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Present_Ladder_renderers)
+		{
+			spriteRenderer.material = ActiveMaterial;
+			spriteRenderer.sortingOrder = 0;
+		}
+
+		GameObject Past_Ladder = GameObject.Find("Past_Ladder");
+		SpriteRenderer[] Past_Ladder_renderes = Past_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Past_Ladder_renderes)
+		{
+			spriteRenderer.material = InActiveMaterial;
+			spriteRenderer.sortingOrder = -4;
+		}
+	}
     void GoToPast()
     {
         currentLayer = Layer.Past;
@@ -164,7 +202,44 @@ public class LayerHandler : MonoBehaviour
         GameObject Past_Foreground = GameObject.Find("Past_Foreground");
         Past_Foreground.GetComponent<TilemapRenderer>().material = activeMaterial;
         Past_Foreground.GetComponent<TilemapRenderer>().sortingOrder = 1;
-    }
+
+		//Other objects
+		GameObject Present_Stone = GameObject.Find("Stone");
+        if (StoneIsInPast)
+        {
+            Present_Stone.GetComponent<SpriteRenderer>().material = activeMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
+        else
+        {
+            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
+        }
+
+		GameObject Past_Sword = GameObject.Find("Item_Sword");
+		if(Past_Sword != null)
+		{
+			Past_Sword.GetComponent<SpriteRenderer>().material = activeMaterial;
+			Past_Sword.GetComponent<SpriteRenderer>().sortingOrder = 0;
+		}
+
+		// Ladders
+		GameObject Present_Ladder = GameObject.Find("Present_Ladder");
+		SpriteRenderer[] Present_Ladder_renderers = Present_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Present_Ladder_renderers)
+		{
+			spriteRenderer.material = inActiveMaterial;
+			spriteRenderer.sortingOrder = -4;
+		}
+
+		GameObject Past_Ladder = GameObject.Find("Past_Ladder");
+		SpriteRenderer[] Past_Ladder_renderes = Past_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Past_Ladder_renderes)
+		{
+			spriteRenderer.material = activeMaterial;
+			spriteRenderer.sortingOrder = 0;
+		}
+	}
 
     #region MyRegion
 
@@ -180,27 +255,45 @@ public class LayerHandler : MonoBehaviour
         }
     }
 
-    public void ChangeLayerForGameObject(GameObject otherGameObject)
+    public void ChangeLayerForGameObject(GameObject stone)
     {
-        if (otherGameObject.transform.parent == layer_present.transform)
+        Material activeMaterial = NotEqualOneMaterial;
+        Material inActiveMaterial = RegularMaterial;
+
+        StoneIsInPast = !StoneIsInPast;
+        GameObject Present_Stone = GameObject.Find("Stone");
+        if (StoneIsInPast)
         {
-            otherGameObject.transform.parent = layer_past.transform;
-            otherGameObject.layer = layer_past.layer;
+            Present_Stone.GetComponent<SpriteRenderer>().material = activeMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+            Present_Stone.layer = 8;
         }
         else
         {
-            otherGameObject.transform.parent = layer_present.transform;
-            otherGameObject.layer = layer_present.layer;
+            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+            Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
+            Present_Stone.layer = 9;
         }
-        SpriteRenderer[] spriteRenderers = otherGameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-        {
-            spriteRenderer.material =
-                spriteRenderer.material == NotEqualOneMaterial ? RegularMaterial : NotEqualOneMaterial;
-            spriteRenderer.sortingOrder = spriteRenderer.sortingOrder == sort_active_tex_main
-                ? sort_deactive_tex_main
-                : sort_active_tex_main;
-        }
+
+        //if (otherGameObject.transform.parent == layer_present.transform)
+        //{
+        //    otherGameObject.transform.parent = layer_past.transform;
+        //    otherGameObject.layer = layer_past.layer;
+        //}
+        //else
+        //{
+        //    otherGameObject.transform.parent = layer_present.transform;
+        //    otherGameObject.layer = layer_present.layer;
+        //}
+        //SpriteRenderer[] spriteRenderers = otherGameObject.GetComponentsInChildren<SpriteRenderer>();
+        //foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+        //{
+        //    spriteRenderer.material =
+        //        spriteRenderer.material == NotEqualOneMaterial ? RegularMaterial : NotEqualOneMaterial;
+        //    spriteRenderer.sortingOrder = spriteRenderer.sortingOrder == sort_active_tex_main
+        //        ? sort_deactive_tex_main
+        //        : sort_active_tex_main;
+        //}
     }
 
     #endregion
