@@ -7,7 +7,7 @@ public class _win_controller : MonoBehaviour {
 
     public void PlayAgain()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     public void ExitGame()
     {

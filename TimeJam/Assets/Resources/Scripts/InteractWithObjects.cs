@@ -8,6 +8,7 @@ public class InteractWithObjects : MonoBehaviour {
 	private Texture[] inventory;
 	private bool showPickUpLine;
 	private Collider2D colliderItem;
+	private float inventoryImageScale = 2;
 
 	// Use this for initialization
 	void Start ()
@@ -65,9 +66,8 @@ public class InteractWithObjects : MonoBehaviour {
 		{
 			Texture tex_pressToPickUp = Resources.Load<Texture>("Textures/Tex_PressToPickUp");
 
-			float imageScale = 3;
-			float imageWidth = tex_pressToPickUp.width * imageScale;
-			float imageHeight = tex_pressToPickUp.height * imageScale;
+			float imageWidth = tex_pressToPickUp.width * inventoryImageScale;
+			float imageHeight = tex_pressToPickUp.height * inventoryImageScale;
 			float imageCenterX = imageWidth / 2;
 			float imageCenterY = 100 + (imageHeight / 2);
 
@@ -80,9 +80,9 @@ public class InteractWithObjects : MonoBehaviour {
 		Texture tex_inventorySpot = Resources.Load<Texture>("Textures/Tex_InventorySpot");
 		Texture tex_inventorySpotFrame = Resources.Load<Texture>("Textures/Tex_InventorySpotFrame");
 
-		float imageScale = 3;
-		float imageWidth = tex_inventorySpot.width * imageScale;
-		float imageHeight = tex_inventorySpot.height * imageScale;
+		
+		float imageWidth = tex_inventorySpot.width * inventoryImageScale;
+		float imageHeight = tex_inventorySpot.height * inventoryImageScale;
 		float imageCenterX = imageWidth / 2;
 		float imageCenterY = imageHeight / 2;
 

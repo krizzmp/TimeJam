@@ -19,6 +19,6 @@ public class winScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("you win");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }
