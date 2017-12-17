@@ -104,7 +104,16 @@ public class PlayerMovementAndClimbing : MonoBehaviour
 		if(collider.tag == "Ladder")
 		{
 			canClimb = false;
-			DisableClimbing();
+
+			if(isClimbing)
+			{
+				Jump();
+			}
+			else
+			{
+				DisableClimbing();
+			}
+
 		}
 	}
 

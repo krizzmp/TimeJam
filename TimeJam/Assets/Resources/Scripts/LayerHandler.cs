@@ -78,8 +78,7 @@ public class LayerHandler : MonoBehaviour
         Present_Foreground.GetComponent<TilemapRenderer>().sortingOrder = 1;
 
 
-
-        GameObject Background_Past = GameObject.Find("Background_Past");
+		GameObject Background_Past = GameObject.Find("Background_Past");
         Background_Past.GetComponentInChildren<SpriteRenderer>().material = InActiveMaterial;
         Background_Past.GetComponentInChildren<SpriteRenderer>().sortingOrder = -6;
 
@@ -94,7 +93,36 @@ public class LayerHandler : MonoBehaviour
         GameObject Past_Foreground = GameObject.Find("Past_Foreground");
         Past_Foreground.GetComponent<TilemapRenderer>().material = InActiveMaterial;
         Past_Foreground.GetComponent<TilemapRenderer>().sortingOrder = -3;
-    }
+
+		//Other objects
+		GameObject Present_Stone = GameObject.Find("Stone");
+		Present_Stone.GetComponent<SpriteRenderer>().material = ActiveMaterial;
+		Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+		GameObject Past_Sword = GameObject.Find("Item_Sword");
+		if(Past_Sword != null)
+		{
+			Past_Sword.GetComponent<SpriteRenderer>().material = InActiveMaterial;
+			Past_Sword.GetComponent<SpriteRenderer>().sortingOrder = -4;
+		}
+
+		// Ladders
+		GameObject Present_Ladder = GameObject.Find("Present_Ladder");
+		SpriteRenderer[] Present_Ladder_renderers = Present_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Present_Ladder_renderers)
+		{
+			spriteRenderer.material = ActiveMaterial;
+			spriteRenderer.sortingOrder = 0;
+		}
+
+		GameObject Past_Ladder = GameObject.Find("Past_Ladder");
+		SpriteRenderer[] Past_Ladder_renderes = Past_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Past_Ladder_renderes)
+		{
+			spriteRenderer.material = InActiveMaterial;
+			spriteRenderer.sortingOrder = -4;
+		}
+	}
     void GoToPast()
     {
         currentLayer = Layer.Past;
@@ -137,7 +165,36 @@ public class LayerHandler : MonoBehaviour
         GameObject Past_Foreground = GameObject.Find("Past_Foreground");
         Past_Foreground.GetComponent<TilemapRenderer>().material = activeMaterial;
         Past_Foreground.GetComponent<TilemapRenderer>().sortingOrder = 1;
-    }
+
+		//Other objects
+		GameObject Present_Stone = GameObject.Find("Stone");
+		Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+		Present_Stone.GetComponent<SpriteRenderer>().sortingOrder = -4;
+
+		GameObject Past_Sword = GameObject.Find("Item_Sword");
+		if(Past_Sword != null)
+		{
+			Past_Sword.GetComponent<SpriteRenderer>().material = activeMaterial;
+			Past_Sword.GetComponent<SpriteRenderer>().sortingOrder = 0;
+		}
+
+		// Ladders
+		GameObject Present_Ladder = GameObject.Find("Present_Ladder");
+		SpriteRenderer[] Present_Ladder_renderers = Present_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Present_Ladder_renderers)
+		{
+			spriteRenderer.material = inActiveMaterial;
+			spriteRenderer.sortingOrder = -4;
+		}
+
+		GameObject Past_Ladder = GameObject.Find("Past_Ladder");
+		SpriteRenderer[] Past_Ladder_renderes = Past_Ladder.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in Past_Ladder_renderes)
+		{
+			spriteRenderer.material = activeMaterial;
+			spriteRenderer.sortingOrder = 0;
+		}
+	}
 
     #region MyRegion
 
