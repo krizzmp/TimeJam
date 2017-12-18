@@ -1,64 +1,182 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.Rendering;
 
 public class LayerHandler : MonoBehaviour
 {
-	private enum Layer
-	{
-		Past,
-		Present,
-		Future
+    private enum Layer
+    {
+        Past,
+        Present,
+		All
+    }
+
+    public GameObject layer_past;
+    public GameObject layer_present;
+    public Material NotEqualOneMaterial;
+    public Material RegularMaterial;
+    public GameObject[] Backgrounds;
+    public GameObject PlayerGameObject;
+
+    public GameObject PortalPrefab;
+    public GameObject PortalPlaceHolder;
+
+    private Layer currentLayer;
+    private bool StoneIsInPast;
+
+    // Use this for initialization
+    void Start()
+    {
+		currentLayer = Layer.Past;
+		ToggleLayer();
+		//Instantiate(PortalPrefab, PlayerGameObject.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
 	}
 
-	public GameObject layer_past;
-	public GameObject layer_present;
-	public GameObject layer_future;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ToggleLayer();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            PortalPlaceHolder.SetActive(true);
+        }
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("sets transform");
+            Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            PortalPlaceHolder.transform.position = new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0);
+            ;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            PortalPlaceHolder.SetActive(false);
+            foreach (GameObject portal in GameObject.FindGameObjectsWithTag("Portal"))
+            {
+                Destroy(portal);
+            }
+            Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Instantiate(PortalPrefab, new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0), Quaternion.identity);
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            PortalPlaceHolder.SetActive(false);
+            foreach (GameObject portal in GameObject.FindGameObjectsWithTag("Portal"))
+            {
+                Destroy(portal);
+            }
+        }
 
-	// Use this for initialization
-	void Start ()
+        Vector3 campos = Camera.main.transform.position;
+        foreach (GameObject background in Backgrounds)
+        {
+            Vector3 bgpos = background.transform.position;
+            background.transform.position = new Vector3(campos.x, bgpos.y, campos.z);
+        }
+    }
+
+	public void ToggleLayer()
 	{
-		SetActiveLayer(Layer.Present);
+		if(currentLayer == Layer.Present)
+		{
+			PlayerGameObject.layer = 10;
+			currentLayer = Layer.Past;
+			SwitchActiveLayer(layer_past, layer_present);
+		}
+		else if(currentLayer == Layer.Past)
+		{
+			PlayerGameObject.layer = 11;
+			currentLayer = Layer.Present;
+			SwitchActiveLayer(layer_present, layer_past);
+		}
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+	private void SwitchActiveLayer(GameObject active, GameObject inactive)
 	{
-		if(Input.GetKeyDown(KeyCode.Alpha1))
+		active.GetComponent<SortingGroup>().sortingOrder = -1;
+		inactive.GetComponent<SortingGroup>().sortingOrder = -2;
+
+		Material activeMaterial = NotEqualOneMaterial;
+		Material inActiveMaterial = RegularMaterial;
+
+		foreach(TilemapRenderer tmr in active.GetComponentsInChildren<TilemapRenderer>())
 		{
-			SetActiveLayer(Layer.Past);
+			tmr.material = activeMaterial;
 		}
-		else if(Input.GetKeyDown(KeyCode.Alpha2))
+
+		foreach(SpriteRenderer spr in active.GetComponentsInChildren<SpriteRenderer>())
 		{
-			SetActiveLayer(Layer.Present);
+			spr.material = activeMaterial;
 		}
-		else if(Input.GetKeyDown(KeyCode.Alpha3))
+
+		//Inactive
+		foreach(TilemapRenderer tmr in inactive.GetComponentsInChildren<TilemapRenderer>())
 		{
-			SetActiveLayer(Layer.Future);
+			tmr.material = RegularMaterial;
+		}
+
+		foreach(SpriteRenderer spr in inactive.GetComponentsInChildren<SpriteRenderer>())
+		{
+			spr.material = RegularMaterial;
 		}
 	}
 
-	private void SetActiveLayer(Layer layer)
-	{
-		switch(layer)
+	#region MyRegion
+
+    public void ChangeLayerForGameObject(GameObject stone)
+    {
+        Material activeMaterial = NotEqualOneMaterial;
+        Material inActiveMaterial = RegularMaterial;
+
+        GameObject Present_Stone = GameObject.Find("Stone");
+  
+        Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+        //Present_Stone.layer = 9;
+		if(Present_Stone.layer == 8)
 		{
-			case Layer.Past:
-				layer_past.SetActive(true);
-				layer_present.SetActive(false);
-				layer_future.SetActive(false);
-				break;
-			case Layer.Present:
-				layer_past.SetActive(false);
-				layer_present.SetActive(true);
-				layer_future.SetActive(false);
-				break;
-			case Layer.Future:
-				layer_past.SetActive(false);
-				layer_present.SetActive(false);
-				layer_future.SetActive(true);
-				break;
+			Present_Stone.layer = 13;
+		}
+		else if(Present_Stone.layer == 9)
+		{
+			Present_Stone.layer = 12;
+		}
+	}
+
+    #endregion
+
+    public void ChangeLayerForExitGameObject(GameObject stone)
+    {
+        Material activeMaterial = NotEqualOneMaterial;
+        Material inActiveMaterial = RegularMaterial;
+        StoneIsInPast = !StoneIsInPast;
+
+        GameObject Present_Stone = GameObject.Find("Stone");
+        if (StoneIsInPast && currentLayer == Layer.Past || !StoneIsInPast && currentLayer == Layer.Present)
+        {
+            Present_Stone.layer = 8;
+            Present_Stone.GetComponent<SpriteRenderer>().material = activeMaterial;
+        }
+        else
+        {
+            Present_Stone.layer = 9;
+            Present_Stone.GetComponent<SpriteRenderer>().material = inActiveMaterial;
+        }
+        if (StoneIsInPast)
+        {
+            Present_Stone.layer = 8;
+			stone.transform.SetParent(layer_past.transform);
 
 		}
-
-	}
+        else
+        {
+            Present_Stone.layer = 9;
+			stone.transform.SetParent(layer_present.transform);
+		}
+    }
 }
