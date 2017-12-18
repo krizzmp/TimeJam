@@ -32,6 +32,8 @@ public class LayerHandler : MonoBehaviour
 		currentLayer = Layer.Past;
 		ToggleLayer();
 		//Instantiate(PortalPrefab, PlayerGameObject.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
+
+        
 	}
 
     // Update is called once per frame
@@ -49,9 +51,10 @@ public class LayerHandler : MonoBehaviour
         {
             Debug.Log("sets transform");
             Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            PortalPlaceHolder.transform.position = new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
-                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0);
-            ;
+            //PortalPlaceHolder.transform.position = new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+            //    Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0);
+            PortalPlaceHolder.transform.position = new Vector3(screenToWorldPoint.x, screenToWorldPoint.y, 0);
+
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -61,8 +64,9 @@ public class LayerHandler : MonoBehaviour
                 Destroy(portal);
             }
             Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Instantiate(PortalPrefab, new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
-                Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0), Quaternion.identity);
+            //Instantiate(PortalPrefab, new Vector3(Mathf.FloorToInt(screenToWorldPoint.x) + 0.5f,
+            //    Mathf.FloorToInt(screenToWorldPoint.y) + 0.5f, 0), Quaternion.identity);
+            Instantiate(PortalPrefab, new Vector3(screenToWorldPoint.x, screenToWorldPoint.y, 0), Quaternion.identity);
         }
         if (Input.GetMouseButtonUp(1))
         {
