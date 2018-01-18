@@ -22,17 +22,27 @@ public class PlayerMovementAndClimbing : MonoBehaviour
         canClimb = false;
         climbDirection = 0;
         moveDirection = 0;
+        var layerHandler = FindObjectOfType<LayerHandler>();
+        layerHandler.LayerChanged += OnLayerChanged;
+    }
+
+    private void OnLayerChanged(Layer layer)
+    {
+        if (layer == Layer.Past)
+        {
+            this.gameObject.layer = 10;
+        }
+        else if (layer == Layer.Present)
+        {
+            this.gameObject.layer = 11;
+        }
     }
 
     private void Update()
     {
         if (canClimb)
         {
-            //if (Input.GetKeyDown(KeyCode.W))
-            //{
-            //    EnableClimbing();
-            //}
-            if (Mathf.RoundToInt(Input.GetAxis("Vertical"))==1)
+            if (Mathf.RoundToInt(Input.GetAxis("Vertical")) == 1)
             {
                 EnableClimbing();
             }
@@ -40,18 +50,6 @@ public class PlayerMovementAndClimbing : MonoBehaviour
         if (isClimbing)
         {
             climbDirection = Mathf.RoundToInt(Input.GetAxis("Vertical"));
-            //if (Input.GetKey(KeyCode.W))
-            //{
-            //    climbDirection = 1;
-            //}
-            //else if (Input.GetKey(KeyCode.S))
-            //{
-            //    climbDirection = -1;
-            //}
-            //else
-            //{
-            //    climbDirection = 0;
-            //}
         }
         else
         {
@@ -64,10 +62,6 @@ public class PlayerMovementAndClimbing : MonoBehaviour
             {
                 Jump();
             }
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    Jump();
-            //}
         }
     }
 
