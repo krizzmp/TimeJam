@@ -43,40 +43,39 @@ public class LayerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float axisX = Input.GetAxis("Right Analog X");
-        float axisY = Input.GetAxis("Right Analog Y");
-        var dist = 2;
-        var mag = new Vector2(Input.GetAxis("Right Analog X"), Input.GetAxis("Right Analog Y"));
-        var pointOnCircle = Player.transform.position + new Vector3(mag.x, mag.y) * dist;
-        if (mag.magnitude > 0.1)
-        {
-            PortalPlaceHolder.SetActive(true);
+  
+        //var dist = 2;
+        //var mag = new Vector2(Input.GetAxis("Right Analog X"), Input.GetAxis("Right Analog Y"));
+        //var pointOnCircle = Player.transform.position + new Vector3(mag.x, mag.y) * dist;
+        //if (mag.magnitude > 0.1)
+        //{
+        //    PortalPlaceHolder.SetActive(true);
 
-            PortalPlaceHolder.transform.position = new Vector3(pointOnCircle.x, pointOnCircle.y, 0);
-        }
-        else
-        {
-            PortalPlaceHolder.SetActive(false);
-        }
-        if (Input.GetButton("Switch"))
-        {
-            if (mag.magnitude > 0.1)
-            {
-                if (portalGameObject != null)
-                {
-                    portalGameObject.transform.position = new Vector3(pointOnCircle.x, pointOnCircle.y, 0);
-                }
-                else
-                {
-                    portalGameObject = Instantiate(PortalPrefab, new Vector3(pointOnCircle.x, pointOnCircle.y, 0), Quaternion.identity);
-                }
-            }
-            else
-            {
-                ClearPortals();
-            }
-            //ToggleLayer();
-        }
+        //    PortalPlaceHolder.transform.position = new Vector3(pointOnCircle.x, pointOnCircle.y, 0);
+        //}
+        //else
+        //{
+        //    PortalPlaceHolder.SetActive(false);
+        //}
+        //if (Input.GetButton("Switch"))
+        //{
+        //    if (mag.magnitude > 0.1)
+        //    {
+        //        if (portalGameObject != null)
+        //        {
+        //            portalGameObject.transform.position = new Vector3(pointOnCircle.x, pointOnCircle.y, 0);
+        //        }
+        //        else
+        //        {
+        //            portalGameObject = Instantiate(PortalPrefab, new Vector3(pointOnCircle.x, pointOnCircle.y, 0), Quaternion.identity);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ClearPortals();
+        //    }
+        //    //ToggleLayer();
+        //}
         if (Input.GetMouseButtonDown(0))
         {
             PortalPlaceHolder.SetActive(true);
